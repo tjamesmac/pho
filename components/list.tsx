@@ -8,9 +8,9 @@ export function List() {
   return (
     <div>
       <h1>All my photos!</h1>
-      {files.map(([file]) => (
-        <li key={file}>
-          <Link href={`list/${file}`}>{`Here's file ${file}`}</Link>
+      {files.map(([id, { name }]) => (
+        <li key={id}>
+          <Link href={`list/${id}`}>{`Here's photos > ${name}`}</Link>
         </li>
       ))}
     </div>

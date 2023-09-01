@@ -20,13 +20,15 @@ export default function Page({ params }: PageProps) {
   const photos = getStore(params.id);
   if (!photos) throw new Error("make this a redirect");
 
+  console.log('photos >>>>', photos)
+
   return (
     <>
-      <h1>Hello list york! - {params.id}</h1>
+      <h1>Hello list york! - {photos.name}</h1>
       <br />
       <ul>
         {photos.photos.map((photo: string) => (
-          <li key={`${params.id}-${photo}`}>{photo}</li>
+          <li key={`${params.id}-${photo.name}`}>{photo.name || photo}</li>
         ))}
       </ul>
     </>

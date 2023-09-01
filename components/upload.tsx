@@ -10,6 +10,8 @@ const Button = () => (
 export function Upload() {
   return (
     <form action={uploadAction}>
+      <input type="text" name="name" className="text-black" />
+      <br />
       <input type="file" multiple name="photo" accept="*" />
       <Button />
     </form>
