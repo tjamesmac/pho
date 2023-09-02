@@ -1,5 +1,6 @@
 "use server";
 import { setFiles } from "@/store";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 /*
@@ -15,11 +16,11 @@ import { redirect } from "next/navigation";
  * I would like utils to help breakdown what these mean
  */
 // @todo - make this better
-const addPhotos = async (name: string, photos: FormDataEntryValue[]): Promise<{ id: string }> => {
+const addPhotos = (name: string, photos: FormDataEntryValue[]) => {
   const id = crypto.randomUUID()
 
   setFiles(id, { photos, name });
-  return new Promise((res) => res({ id }));
+  return { id }
 }
 
 // @todo - maybe change the name to like add post
@@ -29,12 +30,12 @@ export async function uploadAction(form: FormData) {
   const photos = form.get("photo") ?? [];
   // @todo - string cast temporary
   const name = form.get("name") ?? "Uh oh no name!" as string
-  console.log(photos, 'these are my photos');
-  console.log(name, 'this is my name')
   // got my photo and now I can send it off!
-  const { id } = await addPhotos(name, photos);
+  console.log('adding photos for: ', name)
+  const { id } = addPhotos(name as string, photos);
 
 
   // @todo - add the cache thing here!
+  revalidatePath(`/list`)
   redirect(`/list/${id}`);
 }

@@ -7,10 +7,10 @@ export function List() {
 
   return (
     <div>
-      <h1>All my photos!</h1>
+      <h1 className="text-5xl">All my photos!</h1>
       {files.map(([id, { name }]) => (
         <li key={id}>
-          <Link href={`list/${id}`}>{`Here's photos > ${name}`}</Link>
+          <Link href={`list/${id}`}><span>{"Here's photos >>>"}</span><span className="text-sky-600">{` ${name}`}</span></Link>
         </li>
       ))}
     </div>
