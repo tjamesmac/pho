@@ -1,17 +1,28 @@
 
 type StoreId = string
-type StoreValue = { photos: string[] | FormDataEntryValue[], name: string }
+type StoreValue = { name: string, paths: string[] }
 
 const _store = new Map<StoreId, StoreValue>();
-// _store.set('two', { photos: ["one", "two"], name: 'yay!' })
-// _store.set('one', { photos: ["three", "four"], name: 'woo!' })
+const photo_store = new Map<StoreId, Blob>();
 
 const store = () => _store;
 
 export const getFiles = () => Array.from(store().entries());
+
 export const setFiles = (id: string, { photos, name }: StoreValue) => {
   console.log('am i setting stuff now!')
-  store().set(id, { photos: Array.isArray(photos) ? photos : [photos], name })
+  const paths: string[] = [];
+
+  const photoArr = Array.isArray(photos) ? photos : [photos];
+
+  photoArr.forEach((photo) => {
+    const id = crypto.randomUUID();
+    console.log(id, 'setting store for this!')
+    paths.push(id)
+    photo_store.set(id, photo);
+  })
+
+  store().set(id, { name, paths })
 }
 
 
@@ -19,4 +30,9 @@ export const setFiles = (id: string, { photos, name }: StoreValue) => {
 export const getStore = (key: string) => {
   console.log(_store, 'this is the store!')
   return store().get(key)
+}
+
+export const getPhotoStore = (key: string) => {
+  console.log(photo_store, 'this is the store!')
+  return photo_store.get(key)
 }

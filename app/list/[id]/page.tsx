@@ -1,16 +1,3 @@
-import Image from "next/image";
-// import { getFiles, getStore } from "@/store";
-
-// export async function generateStaticParams() {
-//   const ids = getFiles();
-
-//   console.log("static params", ids);
-
-//   return ids.map(([id]) => ({
-//     id,
-//   }));
-// }
-
 type PageProps = {
   params: {
     id: string;
@@ -22,28 +9,36 @@ async function getPhotos(id: string) {
 
   if (!res.ok) throw new Error('failed to get photos')
 
-  return res.json()
+  const { name, paths } = await res.json()
+
+  // console.log(name, paths);
+  // const blobs = [];
+  // for (const path of paths) {
+  //   const response = await fetch()
+  //   blobs.push(await response.blob())
+  // }
+
+  return { name, paths }
 }
 
 
 export default async function Page({ params }: PageProps) {
-  const photos = await getPhotos(params.id);
-  console.log('photos >>>>', photos)
+  const { name, paths } = await getPhotos(params.id);
+
+  console.log(name, paths, 'what are these names and blobs')
 
   return (
     <>
       <div className="flex flex-col">
-        <h1 className="text-5xl">{photos.name}</h1>
+        <h1 className="text-5xl">{name}</h1>
         <br />
         <ul>
-          {photos.photos.map((photo) => {
-            console.log(photo, 'what am i!')
-            const url = URL.createObjectURL(photo);
-            console.log(url, 'what does this look like')
+          {paths.map((path: string) => {
+            console.log(path, 'what am i!')
             return (
-              <li key={`${params.id}-${photo.name}`}>
-                <h2 className="text-2xl">{photo.name}</h2>
-                <Image src={url} alt="test" width={500} height={500} />
+              <li key={`${params.id}-${path}`}>
+                <h2 className="text-2xl">{name}</h2>
+                <img src={`http://localhost:3000/api?path=${path}`} />
               </li>
             )
           })}
