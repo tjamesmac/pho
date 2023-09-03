@@ -1,4 +1,4 @@
-import { getFiles } from "@/store";
+import { getFiles } from "@/app/store";
 import Link from "next/link";
 
 export function List() {

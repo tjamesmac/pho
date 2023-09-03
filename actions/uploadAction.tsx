@@ -1,6 +1,6 @@
 "use server";
-import { setFiles } from "@/store";
-import { revalidatePath } from "next/cache";
+import { setFiles } from "@/app/store";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 /*
@@ -16,10 +16,11 @@ import { redirect } from "next/navigation";
  * I would like utils to help breakdown what these mean
  */
 // @todo - make this better
-const addPhotos = (name: string, photos: FormDataEntryValue[]) => {
+const addPhotos = async (name: string, photos: FormDataEntryValue[]) => {
   const id = crypto.randomUUID()
 
-  setFiles(id, { photos, name });
+  await setFiles(id, { photos, name });
+
   return { id }
 }
 
@@ -27,20 +28,16 @@ const addPhotos = (name: string, photos: FormDataEntryValue[]) => {
 export async function uploadAction(form: FormData) {
   console.log("uploading!");
 
-  // @todo - I think I'm only getting one file from the form instead of all of them
-  // loop through them and build them up
   const photos = form.getAll("photo") ?? [];
   console.info(photos, 'photos from form')
-  console.info(form, 'photos from form')
-  // @todo - string cast temporary
   const name = form.get("name") ?? "Uh oh no name!" as string
-  // got my photo and now I can send it off!
   console.log('adding photos for: ', name)
-  const { id } = addPhotos(name as string, photos);
+  const { id } = await addPhotos(name as string, photos);
+
+  console.log('what is this id!')
 
 
-  // @todo - add the cache thing here!
-  // revalidatePath(`/api`)
-  revalidatePath(`/list/[id]`)
+  console.info('redirecting to: ', id)
+  revalidatePath(`/list/${id}`);
   redirect(`/list/${id}`);
 }

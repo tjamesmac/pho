@@ -1,4 +1,4 @@
-import Image from "next/image"
+import { getStore, getFiles } from "@/app/store";
 import Link from "next/link";
 type PageProps = {
   params: {
@@ -6,21 +6,36 @@ type PageProps = {
   };
 }
 
+// Return a list of `params` to populate the [slug] dynamic segment
+export async function generateStaticParams() {
+  console.log('generating static params')
+  const res = getFiles()
+  console.log(res, 'what is this?')
+
+  return res.map((name) => ({
+    id: name,
+  }))
+}
+
 async function getPhotos(id: string) {
-  const res = await fetch(`http://localhost:3000/list/api?id=${id}`)
+  const photos = await getStore(id)
 
-  if (!res.ok) throw new Error('failed to get photos')
+  console.log(photos)
 
-  const { name, paths } = await res.json()
+  // if (!photos) throw new Error('failed to get photos')
 
-  return { name, paths }
+  return photos
 }
 
 
 export default async function Page({ params }: PageProps) {
-  const { name, paths } = await getPhotos(params.id);
+  const photos = await getPhotos(params.id);
 
-  console.log(name, paths, 'what are these names and blobs')
+  console.log(photos, 'what are these names and paths')
+
+  if (!photos) return <div>Loading...</div>
+
+  const { name, paths } = photos
 
   return (
     <>
@@ -35,7 +50,7 @@ export default async function Page({ params }: PageProps) {
               <li key={`${params.id}-${path}`}>
                 <h2 className="text-2xl">{name}</h2>
                 {/* next/image needs to be enabled in the config and needs width and height  */}
-                <img src={`http://localhost:3000/api?path=${path}`} alt="test" />
+                <img src={`http://localhost:3000/list/${path}/api`} alt="test" />
               </li>
             )
           })}
