@@ -27,7 +27,11 @@ const addPhotos = (name: string, photos: FormDataEntryValue[]) => {
 export async function uploadAction(form: FormData) {
   console.log("uploading!");
 
-  const photos = form.get("photo") ?? [];
+  // @todo - I think I'm only getting one file from the form instead of all of them
+  // loop through them and build them up
+  const photos = form.getAll("photo") ?? [];
+  console.info(photos, 'photos from form')
+  console.info(form, 'photos from form')
   // @todo - string cast temporary
   const name = form.get("name") ?? "Uh oh no name!" as string
   // got my photo and now I can send it off!
@@ -36,6 +40,7 @@ export async function uploadAction(form: FormData) {
 
 
   // @todo - add the cache thing here!
-  revalidatePath(`/list`)
+  // revalidatePath(`/api`)
+  revalidatePath(`/list/[id]`)
   redirect(`/list/${id}`);
 }
