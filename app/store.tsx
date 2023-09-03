@@ -1,13 +1,13 @@
 
 type StoreId = string
-type StoreValue = { name: string, paths: string[] }
+export type StoreValue = { name: string, paths: string[] }
 
 const _store = new Map<StoreId, StoreValue>();
 const photo_store = new Map<StoreId, Blob>();
 
 export const getFiles = () => Array.from(_store.entries());
 
-export const setFiles = async (id: string, { photos, name }: StoreValue) => {
+export const setFiles = async (id: string, { photos, name }: { name: string, photos: FormDataEntryValue[] }) => {
   console.log('starting setFiles')
   const paths: string[] = [];
 
@@ -18,7 +18,7 @@ export const setFiles = async (id: string, { photos, name }: StoreValue) => {
     const id = crypto.randomUUID();
     console.info('>>>>', id, 'setting id')
     paths.push(id)
-    photo_store.set(id, photo);
+    photo_store.set(id, photo as Blob);
   })
 
   return new Promise((res) => res(_store.set(id, { name, paths })))

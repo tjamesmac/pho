@@ -35,7 +35,7 @@ export default async function Page({ params }: PageProps) {
 
   if (!photos) return <div>Loading...</div>
 
-  const { name, paths } = photos
+  const { name, paths } = photos as { name: string, paths: string[] }
 
   return (
     <>
