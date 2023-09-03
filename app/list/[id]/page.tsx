@@ -33,7 +33,10 @@ export default async function Page({ params }: PageProps) {
 
   console.log(photos, 'what are these names and paths')
 
-  if (!photos) return <div>Loading...</div>
+  if (!photos) return (<>
+    <div>Loading...</div>
+    <div>{params.id}</div>
+  </>)
 
   const { name, paths } = photos as { name: string, paths: string[] }
 
