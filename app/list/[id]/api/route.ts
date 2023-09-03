@@ -1,4 +1,4 @@
-import { getPhotoStore } from "@/store";
+import { getPhotoStore } from "@/app/store";
 import { NextResponse } from "next/server";
 
 // const getPath = (url: string) => new URLSearchParams(new URL(url).search).get('path');
