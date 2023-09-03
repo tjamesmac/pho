@@ -1,3 +1,5 @@
+import Image from "next/image"
+import Link from "next/link";
 type PageProps = {
   params: {
     id: string;
@@ -10,13 +12,6 @@ async function getPhotos(id: string) {
   if (!res.ok) throw new Error('failed to get photos')
 
   const { name, paths } = await res.json()
-
-  // console.log(name, paths);
-  // const blobs = [];
-  // for (const path of paths) {
-  //   const response = await fetch()
-  //   blobs.push(await response.blob())
-  // }
 
   return { name, paths }
 }
@@ -31,6 +26,7 @@ export default async function Page({ params }: PageProps) {
     <>
       <div className="flex flex-col">
         <h1 className="text-5xl">{name}</h1>
+        <Link href="/">go home</Link>
         <br />
         <ul>
           {paths.map((path: string) => {
@@ -38,7 +34,8 @@ export default async function Page({ params }: PageProps) {
             return (
               <li key={`${params.id}-${path}`}>
                 <h2 className="text-2xl">{name}</h2>
-                <img src={`http://localhost:3000/api?path=${path}`} />
+                {/* next/image needs to be enabled in the config and needs width and height  */}
+                <img src={`http://localhost:3000/api?path=${path}`} alt="test" />
               </li>
             )
           })}

@@ -15,6 +15,8 @@ export const setFiles = (id: string, { photos, name }: StoreValue) => {
 
   const photoArr = Array.isArray(photos) ? photos : [photos];
 
+  console.log(photoArr, 'phot arr in setFiles')
+
   photoArr.forEach((photo) => {
     const id = crypto.randomUUID();
     console.log(id, 'setting store for this!')
@@ -27,9 +29,9 @@ export const setFiles = (id: string, { photos, name }: StoreValue) => {
 
 
 // @todo - get like a single store
-export const getStore = (key: string) => {
-  console.log(_store, 'this is the store!')
-  return store().get(key)
+export const getStore = async (key: string) => {
+  console.info(`getStore call - ${key}`)
+  return new Promise((res) => res(store().get(key)))
 }
 
 export const getPhotoStore = (key: string) => {
