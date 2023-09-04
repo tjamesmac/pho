@@ -1,6 +1,5 @@
 "use server";
 import { setFiles } from "@/app/store";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 /*
@@ -17,27 +16,27 @@ import { redirect } from "next/navigation";
  */
 // @todo - make this better
 const addPhotos = async (name: string, photos: FormDataEntryValue[]) => {
-  const id = crypto.randomUUID()
+  const id = crypto.randomUUID();
 
+  console.info("addPhotos - setting: ", id);
   await setFiles(id, { photos, name });
 
-  return { id }
-}
+  return { id };
+};
 
 // @todo - maybe change the name to like add post
 export async function uploadAction(form: FormData) {
   console.log("uploading!");
 
   const photos = form.getAll("photo") ?? [];
-  console.info(photos, 'photos from form')
-  const name = form.get("name") ?? "Uh oh no name!" as string
-  console.log('adding photos for: ', name)
+
+  console.info(photos, "photos from form");
+  const name = form.get("name") ?? ("Uh oh no name!" as string);
+
+  console.log("adding photos for: ", name);
   const { id } = await addPhotos(name as string, photos);
 
-  console.log('what is this id!')
-
-
-  console.info('redirecting to: ', id)
-  revalidatePath(`/list/${id}`);
+  console.info("redirecting to: ", id);
+  // revalidatePath(`/list/${id}`);
   redirect(`/list/${id}`);
 }
