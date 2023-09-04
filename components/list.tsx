@@ -1,9 +1,12 @@
 import { getFiles } from "@/app/store";
+import { revalidatePath } from "next/cache";
 import Link from "next/link";
 
 export function List() {
   // @todo - action or something here to get files
   const files = getFiles();
+
+  revalidatePath('/')
 
   return (
     <div>

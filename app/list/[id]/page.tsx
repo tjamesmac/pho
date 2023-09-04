@@ -29,19 +29,12 @@ async function getPhotos(id: string) {
 }
 
 export default async function Page({ params }: PageProps) {
-  const photos = await getPhotos(params.id);
+  const photos = await getPhotos(params.id) as { name: string, paths: string[] }
 
   console.log(photos, "what are these names and paths");
 
-  // if (!photos)
-  //   return (
-  //     <>
-  //       <div>Loading...</div>
-  //       <div>{params.id}</div>
-  //     </>
-  //   );
-
-  const { name = "no name found", paths = [] } = photos as { name: string; paths: string[] };
+  const name = photos.name ?? "no name!";
+  const paths = photos.paths ?? [];
 
   return (
     <>

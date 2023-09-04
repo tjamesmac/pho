@@ -1,6 +1,7 @@
 "use server";
 import { setFiles } from "@/app/store";
 import { revalidatePath } from "next/cache";
+import { RedirectType } from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
 
 /*
@@ -38,5 +39,5 @@ export async function uploadAction(form: FormData) {
   await addPhotos(name as string, photos)
 
   revalidatePath('/')
-  redirect('/')
+  redirect('/', RedirectType.push)
 }
