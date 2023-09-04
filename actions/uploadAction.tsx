@@ -34,8 +34,10 @@ export async function uploadAction(form: FormData) {
   const name = form.get("name") ?? ("Uh oh no name!" as string);
 
   console.log("adding photos for: ", name);
-  addPhotos(name as string, photos).then(({ id }) => {
-    console.info("redirecting to: ", id);
-    redirect(`/list/${id}`);
-  });
+  addPhotos(name as string, photos)
+    .then(({ id }) => {
+      console.info("redirecting to: ", id);
+      redirect(`/list/${id}`);
+    })
+    .catch((err) => console.error("err", err));
 }
