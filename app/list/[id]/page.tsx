@@ -41,12 +41,12 @@ export default async function Page({ params }: PageProps) {
   //     </>
   //   );
 
-  const { name, paths } = photos as { name: string; paths: string[] };
+  const { name = "no name found", paths = [] } = photos as { name: string; paths: string[] };
 
   return (
     <>
       <div className="flex flex-col">
-        <h1 className="text-5xl">{name ?? "no name found"}</h1>
+        <h1 className="text-5xl">{name}</h1>
         <Link href="/">go home</Link>
         <br />
         {paths.length > 0 && (
