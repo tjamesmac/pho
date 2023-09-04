@@ -36,8 +36,8 @@ export async function uploadAction(form: FormData) {
   const name = form.get("name") ?? ("Uh oh no name!" as string);
 
   console.log("adding photos for: ", name);
-  await addPhotos(name as string, photos)
+  const { id } = await addPhotos(name as string, photos);
 
-  revalidatePath('/')
-  redirect('/', RedirectType.push)
+  revalidatePath(`/list/${id}`);
+  redirect(`/list/${id}`, RedirectType.push);
 }

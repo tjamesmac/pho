@@ -33,8 +33,8 @@ export default async function Page({ params }: PageProps) {
 
   console.log(photos, "what are these names and paths");
 
-  const name = photos.name ?? "no name!";
-  const paths = photos.paths ?? [];
+  const name = photos?.name ?? "no name!";
+  const paths = photos?.paths ?? [];
 
   return (
     <>
@@ -48,7 +48,7 @@ export default async function Page({ params }: PageProps) {
               console.log(path, "what am i!");
               return (
                 <li key={`${params.id}-${path}`}>
-                  <h2 className="text-2xl">{name}</h2>
+                  <h2 className="text-2xl">test</h2>
                   {/* next/image needs to be enabled in the config and needs width and height  */}
                   {/* eslint-disable-next-line  */}
                   <img
