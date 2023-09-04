@@ -1,5 +1,6 @@
 "use server";
 import { setFiles } from "@/app/store";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 /*
@@ -34,13 +35,8 @@ export async function uploadAction(form: FormData) {
   const name = form.get("name") ?? ("Uh oh no name!" as string);
 
   console.log("adding photos for: ", name);
-  addPhotos(name as string, photos)
-    .then(({ id }) => {
-      console.info("redirecting to: ", id);
-      throw id
-    })
-    .catch((err) => {
-      console.error("err", err);
-      redirect(`/list/${err}`);
-    });
+  await addPhotos(name as string, photos)
+
+  revalidatePath('/')
+  redirect('/')
 }
