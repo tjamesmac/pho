@@ -52,7 +52,7 @@ export default async function Page({ params }: PageProps) {
                   {/* next/image needs to be enabled in the config and needs width and height  */}
                   {/* eslint-disable-next-line  */}
                   <img
-                    src={`http://localhost:3000/list/${path}/api`}
+                    src={`/list/${path}/api`}
                     alt="test"
                   />
                 </li>
